@@ -1,5 +1,5 @@
 
-Hilbert is an ML Model A/B testing service / framework. It is based on microservices framework and works on users own data and run experiments across web. mobile and desktop. 
+Hilbert is ML Model A/B testing service / framework. It is based on microservices framework and works on users own data and run experiments across web. mobile and desktop. 
 
 Features
 
