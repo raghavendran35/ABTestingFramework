@@ -8,19 +8,21 @@ All the dependencies should be in each backend component's pom, and importing in
 
 ### HOW TO RUN
 ```
-cassandra -f
+>>>cassandra -f
 ```
 
-```cqlsh```   
+```
+>>>cqlsh
+```   
 FOLLOW the scripts with CQL commands to initialize the keyspaces and column families (future release will script this in Java)</br>
 Run Application.java</br>
 Modify port number if needed:</br>
-```-Dserver.port={PORT #}```</br>
+```>>>-Dserver.port={PORT #}```</br>
 Once everything is up and running, now you can perform the API calls</br>
 For example:</br>
-```curl "localhost:8090/Experiments/allExperiments/userID=ER45E"```</br>
-```curl "localhost:8190/Users/addOneUser?firstName=Bob&lastName=Swagger&email= Bob@you.com&username=user&password=pass &lastPasswordChange=none&authLevel=admin"```</br>
-```curl "localhost:8290/Buckets/changeAlloc?bucketID=24233434wsdwe3eas&newAlloc=0.3&userID=34eds3d"```</br>
+```>>>curl "localhost:8090/Experiments/allExperiments/userID=ER45E"```</br>
+```>>>curl "localhost:8190/Users/addOneUser?firstName=Bob&lastName=Swagger&email= Bob@you.com&username=user&password=pass &lastPasswordChange=none&authLevel=admin"```</br>
+```>>>curl "localhost:8290/Buckets/changeAlloc?bucketID=24233434wsdwe3eas&newAlloc=0.3&userID=34eds3d"```</br>
 
 Looking at the API specs for the respective backend components should shed some light on all the current
 capabilities.
