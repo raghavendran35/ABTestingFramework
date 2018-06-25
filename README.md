@@ -19,7 +19,7 @@ Modify port number if needed:</br>
 Once everything is up and running, now you can perform the API calls</br>
 For example:</br>
 ```curl "localhost:8090/Experiments/allExperiments/userID=ER45E"```</br>
-```curl "localhost:8190/Users/addOneUser?firstName=Bob&lastName=Swagger&email=Bob@you.com&username=user&password=pass&lastPasswordChange=none&authLevel=admin"```</br>
+```curl "localhost:8190/Users/addOneUser?firstName=Bob&lastName=Swagger&email= Bob@you.com&username=user&password=pass &lastPasswordChange=none&authLevel=admin"```</br>
 ```curl "localhost:8290/Buckets/changeAlloc?bucketID=24233434wsdwe3eas&newAlloc=0.3&userID=34eds3d"```</br>
 
 Looking at the API specs for the respective backend components should shed some light on all the current
