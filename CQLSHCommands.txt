@@ -1,0 +1,42 @@
+Port 8090
+CREATE KEYSPACE ks WITH REPLICATION  = { ‘class’ : ‘SimpleStrategy’, ‘replication_factor’ :  1};
+CREATE TABLE ks.experiment (id TimeUUID PRIMARY KEY, name text, startDate text, endDate text, description text, lastAccessedBy text, lastEditedBy text, status text, algId int);
+CREATE INDEX nameIndex ON ks.experiment (name);
+CREATE INDEX startIndex on ks.experiment (startDate);
+CREATE INDEX endIndex on ks.experiment (endDate);
+CREATE INDEX lastAccessedByIndex on ks.experiment (lastAccessedBy);
+CREATE INDEX lastEditedByIndex on ks.experiment (lastEditedBy);
+CREATE INDEX statusIndex on ks.experiment (status);
+CREATE INDEX algIdIndex on ks.experiment (algId);
+
+
+
+
+8190
+Each of these are umbrella calls
+//user
+CREATE TABLE ks.User (id TimeUUID PRIMARY KEY, firstName text, lastName text, email text, username text, password text, lastPasswordChange text, expIDs list<TimeUUID>, expNames list<text>, authLevel text);
+CREATE INDEX firstIndex ON ks.User (firstName);
+CREATE INDEX lastIndex on ks.User (lastName);
+CREATE INDEX emailIndex on ks.User (email);
+CREATE INDEX usernameIndex on ks.User (username);
+CREATE INDEX passwordIndex on ks.User (password);
+CREATE INDEX lastPasswordChangeIndex on ks.User (lastPasswordChange);
+CREATE INDEX expIdIndex on ks.User (expIDs);
+CREATE INDEX expNamesIndex on ks.User (expNames);
+CREATE INDEX authLevelIndex on ks.User (authLevel);
+
+8290
+//bucket
+CREATE TABLE ks.Bucket (bucketID TimeUUID PRIMARY KEY, experimentId text, bucketName text, description text, allocation double, model int, allocationHistory list<double>, startDate text, endDate text, lastAccessedBy text, lastEditedBy text, status text);
+CREATE INDEX experimentIndex ON ks.Bucket (experimentId);
+CREATE INDEX bucketNameIndex on ks.Bucket (bucketName);
+CREATE INDEX descriptionIndex on ks.Bucket (description);
+CREATE INDEX allocationIndex on ks.Bucket (allocation);
+CREATE INDEX modelIndex on ks.Bucket (model);
+CREATE INDEX allocHistIndex on ks.Bucket (allocationHistory);
+CREATE INDEX startIndexbuck on ks.Bucket (startDate);
+CREATE INDEX endIndexbuck on ks.Bucket (endDate);
+CREATE INDEX lastAccessedByIndexbuck on ks.Bucket (lastAccessedBy);
+CREATE INDEX lastEditedByIndexbuck on ks.Bucket (lastEditedBy);
+CREATE INDEX statusIndexBuck on ks.Bucket (status);
