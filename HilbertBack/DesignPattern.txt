@@ -1,0 +1,45 @@
+invariants: 
+when performing any READ operations, validate the user (if they are not part of the organization)
+when performing any DELETE operations, validate the user (as part of org) and admin level if it is deleteAll
+when performing any CREATE operations, validate the user (as part of org)
+when performing any Update operations, validate the user (as part of org)
+
+GOING TO ASSUME THAT A CHANGE TO END DATE OF A BUCKET WILL NOT IMPACT EXPERIMENT AND VICE VERSA--
+until needed----ASK MOHAN!!!!!
+
+
+
+TODO:
+-make sure that experimentController, userController, bucketController do not handle REST calls
+-the business logic stuff must handle the calls, the experimentController, etc must have typical mapping methods
+when
+
+BizLogic Class
+	-every call should run through this
+
+	Experiments
+	-during experiment creation, need to establish that start and end dates are valid
+	-when assigning experiment to a user, check if user is part of organization and experiment is valid
+	-is the selection routine valid?
+	-in deleteAll, does person who is deleting have correct rights
+
+
+
+
+
+	Buckets
+	-during bucket creation, need to establish start and end dates are valid
+	-status of the buckets for an experiment is "invalid" or "notStarted" unless total bucket allocation is 1.0
+	-is the model attached to this valid?
+	-is the experiment that a bucket is assigned to valid?
+	-in deleteAll, does person who is deleting have correct rights
+
+
+
+
+
+	Users
+	-when creating user, is the org valid?
+	-when reading all users, is the person who is viewing actually a part of the organization?
+	-when performing deleteAll, does the person who is deleting have correct rights?
+	-when changing the password, is the lastPasswordChange recent-within 12 hours (then some 2-step verification)-and is it actually the user themselves?
