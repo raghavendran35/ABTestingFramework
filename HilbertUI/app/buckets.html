@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en" ng-app="allView">
+<head>
+    <meta charset="utf-8">
+    <h1>Hilbert-A/B Testing</h1>
+    <button type="submit"  onClick="refreshPage()">Refresh Button</button>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="app.css" />
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="app.js"></script>
+    <script src="funcs.js"></script>
+    <script src="model-list.component.js"></script>
+    <script src="phone-list.component.js"></script>
+    <script src="formit.js"></script>
+    <script src = "httpget.js"></script>
+	</head>
+	<body>  
+        <div>
+        <hr style="height:1px;border:none;color:#333;background-color:#333;">
+                 <div> 
+            
+
+                    <h4>Current Buckets</h4>
+                <div ng-controller="buckets">
+                    <div class="table-responsive">
+                    
+                <table class = "table">
+                  <tr>
+                    <th>App/Model</th>
+                    <th>Bucket Name</th>
+                    <th>Experiment</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                    <th>Allocation</th>
+                      <th>Delete</th>
+                  </tr>
+                  <tr ng-repeat="buck in buckets">
+                    <td><form action="http://localhost:8080/boss/changeBucket" method="put" enctype='application/json' target="hidden-form">
+                        <input type = "hidden" name="accessingUser" id="accessingUser" value = "ff28d340-7e4c-11e8-b61a-19fcc49447c2">
+                        <input type = "hidden"
+                        name="bucketID" id="bucketID"
+                        value = {{buck.bucketID}}>
+                        <input type= "hidden" name="category" id="category" value = "model">
+                        <input  contenteditable="true" name="newEntity" id="newEntity" value="{{buck.model}}">
+                        </form></td>
+                    <td><form action="http://localhost:8080/boss/changeBucket" method="put" enctype='application/json' target="hidden-form">
+                        <input type = "hidden" name="accessingUser" id="accessingUser" value = "ff28d340-7e4c-11e8-b61a-19fcc49447c2">
+                        <input type = "hidden"
+                        name="bucketID" id="bucketID"
+                        value = {{buck.bucketID}}>
+                        <input type= "hidden" name="category" id="category" value = "name">
+                        <input  contenteditable="true" name="newEntity" id="newEntity" value="{{buck.bucketName}}">
+                        </form></td>
+                    <td ng-controller="buckExps">
+                    {{buckExps[buck.bucketName]}}
+                      </td>
+                    <td>{{buck.startDate}}</td>
+                    <td><form action="http://localhost:8080/boss/changeBucket" method="put" enctype='application/json' target="hidden-form">
+                        <input type = "hidden" name="accessingUser" id="accessingUser" value = "ff28d340-7e4c-11e8-b61a-19fcc49447c2">
+                        <input type = "hidden"
+                        name="bucketID" id="bucketID"
+                        value = {{buck.bucketID}}>
+                        <input type= "hidden" name="category" id="category" value = "endDate">
+                        <input  contenteditable="true" name="newEntity" id="newEntity" value=" {{buck.endDate}}">
+                        </form>
+                      </td>
+                    <td><form action="http://localhost:8080/boss/changeBucket" method="put" enctype='application/json' target="hidden-form">
+                        <input type = "hidden" name="accessingUser" id="accessingUser" value = "ff28d340-7e4c-11e8-b61a-19fcc49447c2">
+                        <input type = "hidden"
+                        name="bucketID" id="bucketID"
+                        value = {{buck.bucketID}}>
+                        <input type= "hidden" name="category" id="category" value = "status">
+                        <select name ="newEntity" onchange="this.form.submit()" >
+                            <option selected="selected">{{buck.status}}</option>
+                            <option value ="{{i}}" ng-repeat = "i in ['inactive', 'active started', 'active paused', 'terminated']">{{i}}</option>
+                        </select>
+                        </form></td>
+                    <td><form action="http://localhost:8080/boss/changeBucket" method="put" enctype='application/json' target="hidden-form">
+                        <input type = "hidden" name="accessingUser" id="accessingUser" value = "ff28d340-7e4c-11e8-b61a-19fcc49447c2">
+                        <input type = "hidden"
+                        name="bucketID" id="bucketID"
+                        value = {{buck.bucketID}}>
+                        <input type= "hidden" name="category" id="category" value = "allocation">
+                        <input  contenteditable="true" name="newEntity" id="newEntity" value="{{buck.allocation}}">
+                        </form>
+                      </td>
+                      
+                      <td>
+                          <form  action="http://localhost:8080/boss/deleteOne" method= "delete" enctype='application/json' target="hidden-form">
+                        <input type = "hidden"
+                        name="accessingUser" id="accessingUser"
+                        value = "ff28d340-7e4c-11e8-b61a-19fcc49447c2">
+                        <input type= "hidden" name="category" id="category" value = "Buckets">
+                        <input type = "hidden" name="elementID" value="{{buck.bucketID}}">
+                              <button onClick="window.location.reload()" class="glyphicon glyphicon-minus-sign"></button></form>
+                              
+                          
+                      </td>
+                  </tr>
+                </table>
+                     </div>
+                    </div>
+                     
+                     
+                     
+                     
+                     <hr style="height:1px;border:none;color:#333;background-color:#333;">
+                <!--fix this!-->
+                <h4>Create Bucket</h4>
+                    <div>
+                    <form action="http://localhost:8080/boss/buckets/addOneBucket" method="post" enctype='application/json' target="hidden-form">
+                      <fieldset>
+                      <div>
+                        <div>
+                          <label for="bucketName">Bucket Name</label>
+                        <input name="bucketName" id="bucketName" value="Bucket1">
+                      </div>
+                      <br>
+                      <div>
+                          <label for="experimentID">Experiment</label>
+                          <select name = "experimentID" ng-controller="experiments">
+                              <option value ="{{experiment.id}}" ng-repeat="experiment in experiments">{{experiment.name}}</option>
+                          </select>
+                      </div>
+                        <br>
+                        <div style="float:left;margin-right:20px;">
+                        <label for="startDate">Start Date</label>
+                        <input name="startDate" id="startDate" value="">
+                      </div>
+                      <div style="float:left;">
+                        <label for="endDate">End Date</label>
+                        <input name="endDate" id="endDate" value="">
+                      </div>
+                        <br>
+                        <br>
+                        <div>
+                        <label for="description">Description</label>
+                        <input name="description" id="description" value = "">
+                      </div>
+                      <br>
+                      <div>
+                        <label for="allocation">Allocation Percentage</label>
+                        <input name="allocation" id="allocation" value=0.0>
+                        <label for="model">Model</label>
+                        <input name="model" id="model" value=1>
+                      </div>
+                      <br>
+                      <div>
+                        <label for="status">Status</label>
+                        <select name ="status">
+                            <option value ="{{i}}" ng-repeat = "i in ['inactive', 'active started', 'active paused', 'terminated']">{{i}}</option>
+                        </select>
+                      </div>
+                      <br>
+                        <div>
+                          <button onClick="window.location.reload()">Add Bucket</button>
+                          <button><a href="experimentTab.html">Cancel</a></button>
+                        </div>
+                        </div>
+                        </fieldset>
+                    </form>
+                    </div>
+                    </div>
+                    <IFRAME style="display:none" name="hidden-form"></IFRAME>
+            <script>
+            function DateFormat(p1){
+                var x = p1.split("-");
+                return x[2]+x[0]+x[1];
+            }
+            </script>
+        </div>
+	</body>
+
+</html>

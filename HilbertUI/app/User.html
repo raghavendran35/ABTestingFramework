@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en" ng-app="allView">
+<fieldset>
+  <head>
+    <meta charset="utf-8">
+    <h1>User Management</h1>
+    <button type="submit"  onClick="refreshPage()">Refresh Button</button>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="app.css" />
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="app.js"></script>
+    <script src="funcs.js"></script>
+    <script src="model-list.component.js"></script>
+    <script src="phone-list.component.js"></script>
+    <script src="formit.js"></script>
+    <script src = "httpget.js"></script>
+  </head> 
+  <body>
+      <div>
+          <div id="Users">
+                  <h3>Users</h3>
+                <div>
+                  <form action="http://localhost:8080/boss/users/addOneUser" method="post" enctype='application/json'>
+                      <fieldset>
+                        <div>
+                          <label for="firstName">First Name</label>
+                        <input name="firstName" id="firstName" value="Bill">
+                        <label for="lastName">Last Name</label>
+                        <input name="lastName" id="lastName" value="James">
+                      </div>
+                          <br>
+                      
+                      <div>
+                        <p>Please note that only valid org emails will be allowed!</p>
+                        <div>
+                          <label for="email">Email Address</label>
+                        <input name="email" id="email" value="john@hivedata.org">
+                      </div>
+                      <br>
+                      <div>
+                          <label for="username">username</label>
+                        <input name="username" id="username" value="username">
+                        <label for="password">password</label>
+                        <input name="password" id="password" value="password">
+                      </div>
+                      <div>
+                        <label for="authLevel">Authorization Level</label>
+                        <input name="authLevel" id="authLevel" value="user">
+                      </div>
+                      <br>
+                        <div>
+                          <button>Add User</button>
+                        </div>
+                        </div>
+                        </fieldset>
+                      </form>  
+                </div>
+                <br>
+                <h4>Change the User</h4>
+                <div>
+                <form action="http://localhost:8080/boss/changeUser" method="put" enctype='applications/json'>
+                      <fieldset>
+                      <div ng-controller="users">
+                          <label>Who is accessing?</label>
+                          <select name ="accessingUser">
+                              <option value ="{{use.id}}" ng-repeat="use in users">{{use.id}}</option>
+                          </select>
+                          <br>
+                          <label>Changed User</label>
+                          <select  name = "userToChange" >
+                            <option value ="{{use.id}}" ng-repeat="use in users">{{use.firstName}} {{use.lastName}}</option>
+                          </select>
+                          <br>
+                          <label>Category</label>
+                          <select name="category">
+                          <option value="password">Password</option>
+                          <option value="authLevel">Authorization Level</option>
+                          </select>
+                          <br><br>
+                          <label for="newEntity">New Value</label>
+                          <input name="newEntity" id="newEntity" value="">
+                        </div>
+                        <div>
+                          <button>Change User</button>
+                        </div>
+                        </fieldset>
+                    </form>
+                    </div>
+          </div>
+
+
+
+      
+      
+      </div>  
+  </body>
+</fieldset>
+</html>
+
+
+

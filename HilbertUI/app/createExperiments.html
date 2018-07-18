@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en" ng-app="allView">
+<head>
+    <meta charset="utf-8">
+    <h1>Hilbert-A/B Testing</h1>
+    <button type="submit"  onClick="refreshPage()">Refresh Button</button>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="app.css" />
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="app.js"></script>
+    <script src="funcs.js"></script>
+    <script src="model-list.component.js"></script>
+    <script src="phone-list.component.js"></script>
+    <script src="formit.js"></script>
+    <script src = "httpget.js"></script>
+	</head>
+	<body>
+		          <div id="Experiments">  
+               <h3>Experiments</h3>
+                      <hr style="height:1px;border:none;color:#333;background-color:#333;">
+                  <p>Create Experiment</p>
+                    <div>
+                    <form action="http://localhost:8080/boss/experiments/addOneExperiment" method="post" enctype='application/json' target="hidden-form">
+                      <fieldset>
+                      <div>
+                        <div>
+                          <label for="name">Experiment Name</label>
+                        <input name="name" id="name" value="">
+                      </div>
+                        <br>
+                        <div style="float:left;margin-right:20px;">
+                        <label for="startDate">Start Date</label>
+                        <input name="startDate" id="startDate" value="07-12-2018">
+                      </div>
+                      <div style="float:left;">
+                        <label for="endDate">End Date</label>
+                        <input name="endDate" id="endDate" value="">
+                      </div>
+                        <br>
+                        <br>
+                        <div>
+                        <label for="description">Description</label>
+                        <input name="description" id="description" size="100">
+                      </div>
+                      <br>
+                      <div>
+                          <label>Status</label>
+                          <select name="status">
+                        <option value ="{{i}}" ng-repeat = "i in ['inactive', 'active started', 'active paused', 'terminated']">{{i}}</option>
+                              </select>
+                        <label for="algID">Selection Routine</label>
+                        <input name="algID" id="algID" value="">
+                      </div>
+                      <br>
+                          <hr color="black">
+                        <div>
+                            
+                          <button onClick="window.location.reload(); ">
+                              Create Experiment</button>
+                        
+                            
+                            
+                            
+                            
+                            <button><a href="index.html">Cancel</a></button>
+                        
+                                        
+                                
+                            </div>
+                        
+                        </div>
+                        </fieldset>
+                    </form>
+                             
+                    </div>
+               <br><br>
+                
+            <IFRAME style="display:none" name="hidden-form"></IFRAME> 
+           </div>
+	</body>
+
+</html>

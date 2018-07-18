@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en" ng-app="allView">
+<fieldset>
+  <head>
+    <meta charset="utf-8">
+    <h1>Hilbert-A/B Testing</h1>
+    <button type="submit"  onClick="refreshPage()">Refresh Button</button>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="app.css" />
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="funcs.js"></script>
+    <script src = "httpget.js"></script>
+  </head> 
+  <body>
+      
+        <p>Current Date: <script> document.write(new Date().toDateString()); </script></p>
+                    <div>
+
+            
+                    <!--cleared-->
+                <div class="tab">
+                    
+                <button class="buts" style = "float:right">Signout</button>
+                <!--Tab links-->
+                  <button class="tablinks active" onclick="openCat(event, 'Home')">Home</button>
+                  <button class="tablinks" onclick="openCat(event, 'Experiments')">Experiments</button>
+                  <button class="tablinks" onclick="openCat(event, 'Users')"><a href="User.html" class="button">Users</a></button>
+                  <button class="tablinks" onclick="openCat(event, 'Models')">Models/Applications</button>
+                </div>
+                        
+            <button><a href="createExperiments.html" class="button">Create Experiments</a></button>
+
+            <div id = "Models" class = "tabcontent">
+                    <h4>Nothing</h4>
+            </div>
+                        
+            <div id = "Experiments" class = "tabcontent">
+                        
+                        </div>
+      
+           <div id = "Home" class = "tabcontent" ng-controller="experiments" style="display:block">
+
+               <div class="card">
+                <div class="card-header">                                
+                <div class="card-header-right">
+                <ul class="list-unstyled card-option">
+                <li><i class="fa fa-chevron-left"></i></li>
+                <li><i class="fa fa-window-maximize full-card"></i></li>
+                <li><i class="fa fa-minus minimize-card"></i></li>
+                <li><i class="fa fa-refresh reload-card"></i></li>
+                <li><i class="fa fa-times close-card"></i></li>
+                </ul>
+                </div>
+                </div>
+                <div class="card-block table-border-style" >
+                <div class="table-responsive">
+                <table class="table table-inverse">
+                <thead .border-bottom-*>
+                <tr>
+                    <th>Selection Routine</th>
+                    <th>Experiment Name</th>
+                    <th>Created By</th>
+                    <th>% Sampling</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Last Modified By</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody class="inp">
+                 <tr ng-repeat = "exps in experiments">
+                    <td>
+                        {{exps.algorithmId}}
+                    <td>
+                        <!--check that local storage works, then make it redirect-->
+                        
+                        <a ng-href='editExperiments.html' ng-click='localStorage.clear(); setVars(exps.id, exps.name, exps.startDate, exps.endDate, exps.description, exps.algorithmId)'; >{{exps.name}}</a>
+                        
+                        
+                     </td>
+                    <td>admin</td>
+                    <td>{{100/200}}</td>
+                    <td>
+                        {{exps.startDate}}
+                     </td>
+                    <td >{{exps.endDate}}
+                     </td>
+                    <td>{{exps.lastEditedBy}}</td>
+                    <td>
+                        <form action="http://localhost:8080/boss/changeExperiment" method="put" enctype='application/json' target="hidden-form">
+                        <input type = "hidden" name="accessingUser" id="accessingUser" value = "ff28d340-7e4c-11e8-b61a-19fcc49447c2">
+                        <input type = "hidden"
+                        name="expID" id="expID"
+                        value = {{exps.id}}>
+                        <input type= "hidden" name="category" id="category" value = "status">
+                        <select name ="newEntity" onchange="this.form.submit()" >
+                            <option selected="selected">{{exps.status}}</option>
+                            <option value ="{{i}}" ng-repeat = "i in ['inactive', 'active started', 'active paused', 'terminated']">{{i}}</option>
+                        </select>
+                        </form>
+                     
+                     </td>
+                     <!--
+                     <td>
+                         <form  action="http://localhost:8080/boss/deleteOne" method= "delete" enctype='application/json' target="hidden-form">
+                        <input type = "hidden"
+                        name="accessingUser" id="accessingUser"
+                        value = "ff28d340-7e4c-11e8-b61a-19fcc49447c2">
+                        <input type= "hidden" name="category" id="category" value = "Experiments">
+                        <input type = "hidden" name="elementID" value="{{exps.id}}">
+                         <button onClick="window.location.reload()" class="glyphicon glyphicon-minus-sign"></button>
+                        </form></td>-->
+                         
+                     
+                     
+                     
+                     
+                    </tr>
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                </div>
+           
+      
+            <IFRAME style="display:none" name="hidden-form"></IFRAME>  
+      
+      
+      
+      </div>  
+  </body>
+</fieldset>
+</html>
