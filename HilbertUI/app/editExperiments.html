@@ -90,10 +90,10 @@
                             <div style="float:right">
                         <button><a href="index.html">Start Experiment</a></button>
                                 <!--save is a decoy, stuff should have been changed right after entering changes, make sure to do reset localStorage-->
-                          <input type="button" value="Save Experiment" onclick="alert20()"/>
+                        <button id="ExperimentSave">Save Experiment</button>
                                 
                                 
-            <button><a href="index.html">Cancel</a></button>
+            <button onclick='window.location.replace("index.html")'>Cancel</button>
                                 
             <script type="text/javascript">
             var urlx = "http://localhost:8080/boss/experiments/validSizes?userID=ff28d340-7e4c-11e8-b61a-19fcc49447c2&expID="+localStorage.getItem('expid');
@@ -101,16 +101,28 @@
                     http.responseType='text';
                 //alert for bucket validation
                 
-                function f1(){
-                  
-                }
+                document.getElementById("ExperimentSave").addEventListener("click", alert20)
                 
                 function alert20(){ 
-                http.open("GET", urlx);
-                 http.send(); 
-                var q = Boolean(http.responseText.trimEnd()==="")
-                    window.confirm(q.toString());
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                var r = xhr.responseText.toString().trim();
+                if (r==="false"){
+                    if (window.confirm("WARNING! Bucket allocation size(s) is not valid. Please double check!")){
+                        window.location.replace("index.html");
+                    }
                 }
+                else{
+                    window.location.replace("index.html");
+                }
+                }
+                }
+                xhr.open('GET', urlx, true);
+                xhr.send(null);
+                }
+                
+                
                     
                                 
                                 
@@ -185,7 +197,7 @@
                       <br>
                         <div>
                           <button onclick="window.location.reload();">Add Bucket</button>
-                          <button><a href="editExperiments.html">Cancel</a></button>
+                          <button onclick='window.location.reload()'><a href="editExperiments.html">Cancel</a></button>
                         </div>
                         </div>
                         </fieldset>
