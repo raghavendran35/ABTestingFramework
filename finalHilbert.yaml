@@ -1,0 +1,548 @@
+openapi: "3.0.0"
+info:
+  title: Hilbert API
+  description: 'This is the API for the Hilbert Business Logic Data Management. It is important to have a (configured) cassandra server connected to the spring database handler. '
+  version: '1.0'
+  contact:
+    name: Hilbert User API
+    email: sachin@hivedata.com
+servers:
+  #double check this
+  - url: http://localhost:8080/boss
+    description: host server
+
+
+paths:
+  /buckets/addOneBucket:
+    post:
+      tags:
+      - Create a Bucket
+      summary: Bucket Creation
+      description: "This is the bucket creation method. Start and End Date validation is implemented while the lastEditedBy of this bucket will be implemented at first as 'none'. "
+      operationId: "CreateBucket"
+      parameters: 
+        - name : experimentID
+          in: query
+          description: "**Experiment ID**. The String (that will be converted to UUID) identification of which experiment the bucket responds to. "
+          schema:
+            type: string
+        - name : bucketName
+          in: query
+          description: "**Bucket Name**. The String name identification of what the bucket is called. "
+          schema:
+            type: string
+        - name : description
+          in: query
+          description: "**description**. The String description of the bucket. "
+          schema:
+            type: string
+        - name : allocation
+          in: query
+          description: "**allocation**. The double allocation of what percentage of the data is allotted to the bucket. "
+          schema:
+            type: string
+        - name : model
+          in: query
+          description: "**model**. The int corresponding to the model in this bucket. There will likely be a mapping directory of integers to a model due to the ease of curling such a request. "
+          schema:
+            type: string
+        - name : startDate
+          in: query
+          description: "**Start Date**. The Assigned Start Date for the bucket. "
+          schema:
+            type: string
+        - name : endDate
+          in: query
+          description: "**End Date**. The Assigned End Date for the bucket. "
+          schema:
+            type: string
+        - name : status
+          in: query
+          description: "**Bucket Status**. The String status for a bucket Possible options: notStarted, Started, finished, invalid, etc... "
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful response
+        404:
+          description: not found
+        400:
+          description: bad/malformed request
+  /users/addOneUser:
+    post:
+      tags:
+      - Create a User
+      summary: "New user"
+      description: "This method creates a user and adds it to the current User Management database. Note that the list of experiment names and the list of experiment UUIDs assigned to the user will have nothing initially. The password will be encrypted using the SHA-256 hash and password authentication will be performed by hash-matching."
+      operationId: "addUser"
+      parameters: 
+        - name : firstName
+          in: query
+          description: "**First Name**. User's first name."
+          schema:
+            type: string
+        - name : lastName
+          in: query
+          description: "**Last Name**. User's last name."
+          schema:
+            type: string
+        - name : email
+          in: query
+          description: "**Email**. User's email. Can me modified for company specifications."
+          schema:
+            type: string
+        - name : username
+          in: query
+          description: "**username**. Part of user identification."
+          schema:
+            type: string
+        - name : password
+          in: query
+          description: "**password**. Part of user identification."
+          schema:
+            type: string
+        - name : authLevel
+          in: query
+          description: "**Authorization Level**. This can be used to determine who has access for future tasks."
+          schema:
+            type: string
+      responses:
+        200:
+          description: created
+        404:
+          description: not found
+        400:
+          description: bad/malformed request 
+  /experiments/addOneExperiment:
+    post:
+      tags:
+      - Create an Experiment
+      summary: "New experiment"
+      description: "This is the pivotal Experiment Creation method. Errors will be thrown if the required parameters in the request call are not valid. Additionally, there is start and end date validation."
+      operationId: "addExperiment"
+      parameters: 
+        - name : name
+          in: query
+          description: "**Experiment Name**. This String corresponds to the name of the experiment."
+          schema:
+            type: string
+        - name : startDate
+          in: query
+          description: "**Experiment Start Date**. This String corresponds to the start date of the experiment. Has to be of the following formats: 'mm-dd' or 'mm-dd-yyyy'"
+          schema:
+            type: string
+        - name : endDate
+          in: query
+          description: "**Experiment End Date**. This String corresponds to the end date of the experiment. Has to be of the following formats: 'mm-dd' or 'mm-dd-yyyy'"
+          schema:
+            type: string
+        - name : description
+          in: query
+          description: "**Short Description**. This String corresponds to a short description of the experiment."
+          schema:
+            type: string
+        - name : status
+          in: query
+          description: "**Experiment Status**. This String corresponds to the status of the experiment. Default should be something tending towards 'notStarted'."
+          schema:
+            type: string
+        - name : algID
+          in: query
+          description: "**Selection Routine ID**. This int corresponds to the selection routine for the buckets of the experiment."
+          schema:
+            type: integer
+      responses:
+        201:
+          description: created
+        404:
+          description: not found
+        400:
+          description: bad/malformed request
+  /users/addOneBucket:
+    post:
+      tags:
+      - Add a bucket to user
+      summary: "New Bucket"
+      description: "This method adds a specific bucket to a user. It will automatically add the specific experiment to the user's history. Multiple buckets from the same experiment cannot be added. If that is the case, no error will be thrown but the operation will be stopped."
+      operationId: "addBucketUser"
+      parameters: 
+        - name : bucketID
+          in: query
+          description: "**Bucket ID**. This String corresponds to the name of the experiment."
+          schema:
+            type: string
+        - name : userID
+          in: query
+          description: "**User ID**. This String corresponds to the name of the experiment."
+          schema:
+            type: string
+      responses:
+        201:
+          description: created
+        404:
+          description: not found
+        400:
+          description: bad/malformed request
+  /experiments/addOneBucket:
+    post:
+      tags:
+      - Add a bucket to an Experiment
+      summary: "New Bucket"
+      description: "This method adds a specific bucket to an experiment.  No error will be thrown but the operation will be stopped."
+      operationId: "addBucketUser"
+      parameters: 
+        - name : bucketID
+          in: query
+          description: "**Bucket ID**. This String corresponds to the name of the bucket."
+          schema:
+            type: string
+        - name : expID
+          in: query
+          description: "**Experiment ID**. This String corresponds to the name of the bucket."
+          schema:
+            type: string
+        - name : userID
+          in: query
+          description: "**User ID**. This String corresponds to the name of the user accessing."
+          schema:
+            type: string
+      responses:
+        201:
+          description: created
+        404:
+          description: not found
+        400:
+          description: bad/malformed request
+  /findOneByName:
+    get:
+      tags:
+      - Find a specific Entity By Name
+      summary: "Specific Entity data"
+      description: "This is a generic method that finds an entity by name. The viewer must be an admin (for now simulated as having a certain authorization as the keyword). No error is thrown unless the method is called with an illegitimate set of parameter(s). This is a rigorously-defined method as all cases of all letters and characters matter."
+      operationId: "OneEntity"
+      parameters: 
+        - name : userID
+          in: query
+          description: "**User ID**. In order to view the information for a specific experiment, you must know the TimeUUID that corresponds to the User who is accessing it."
+          schema:
+            type: string
+        - name : category
+          in: query
+          description: "**Entity Category**.This String corresponds to Experiments or Buckets."
+          schema:
+            type: string
+            enum: ['Experiments', 'Buckets']
+        - name : entityName
+          in: query
+          description: "**Name of Entity**.This String corresponds to the name of the specific Experiment or Bucket."
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful response
+        404:
+          description: not found
+        400:
+          description: bad/malformed request
+  /readAll:
+    get:
+      tags:
+      - Get all of a specific Entity
+      summary: All Entity Viewing
+      description: "This is a viewing method for all the entities (of a specifc category) in the organization. The person viewing must have the right admin level. The categories must be either Users, Experiments and Buckets."
+      operationId: "AllEntity"
+      parameters: 
+        - name : category
+          in: query
+          description: "This String corresponds to the category whose elements will be viewed. This must be either 'Experiments', 'Users' or 'Buckets'."
+          schema:
+            type: string
+            enum: ['Experiments', 'Users', 'Buckets']
+        - name: accessingUser
+          in: query
+          description: "This String (truly a UUID) corresponds to the User who is acting."
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful response
+        404:
+          description: not found
+        400:
+          description: bad/malformed request
+  /readOne:
+    get:
+      tags:
+      - Get One of a specific Entity
+      summary: One Entity Viewing
+      description: "This is a viewing method for one of the entities (of a specifc category) in the organization. The person viewing must have the right admin level. The category must be either Users, Experiments and Buckets."
+      operationId: "OneEntity"
+      parameters: 
+        - name : category
+          in: query
+          description: "This String corresponds to the category whose elements will be viewed. This must be either 'Experiments', 'Users' or 'Buckets'."
+          schema:
+            type: string
+            enum: ['Experiments', 'Buckets','Users']
+        - name : elementID
+          in: query
+          description: "This String (truly a UUID) corresponds to the experiment, user or bucket."
+          schema:
+            type: string    
+        - name: accessingUser
+          in: query
+          description: "This String (truly a UUID) corresponds to the User who is acting."
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful response
+        404:
+          description: not found
+        400:
+          description: bad/malformed request
+  /users/findUserByExpBuck:
+    get:
+      tags:
+      - Get a User
+      summary: View a User
+      description: "This is a viewing method for the users in the organization. The person viewing must have the right admin level. Each user in the organization has a unique Bucket and Experiment combination."
+      operationId: "UserbyExpBuck"
+      parameters: 
+        - name : bucketID
+          in: query
+          description: "This String (truly a UUID) corresponds to the Bucket (for the specific user)."
+          schema:
+            type: string
+        - name : expID
+          in: query
+          description: "This String (truly a UUID) corresponds to the Experiment (for the specific user)."
+          schema:
+            type: string
+        - name: accessingUser
+          in: query
+          description: "This String (truly a UUID) corresponds to the User who is acting."
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful response
+        404:
+          description: not found
+        400:
+          description: bad/malformed request
+  /experiments/allBuckets:
+    get:
+      tags:
+      - Get all buckets of an experiment
+      summary: View Buckets of an Experiment
+      description: "This method displays all the buckets for a specific experiment (identified by the experiment ID). Should the specific experiment not be found or the user who is accessing not have the right authorization level, the request call will not be performed."
+      operationId: "allBucksofExps"
+      parameters: 
+        - name : expID
+          in: query
+          description: "This String (truly a UUID) corresponds to the experiment."
+          schema:
+            type: string
+        - name : accessingUser
+          in: query
+          description: "This String (truly a UUID) corresponds to the accessing user."
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful response
+        404:
+          description: not found
+        400:
+          description: bad/malformed request
+  /changeUser:
+    put:
+      tags:
+      - Change the User
+      summary: User modification
+      description: "This method performs an element change for the a user based on their specific ID. The password will also be changed and then encrypted with SHA-256 as long as the user is valid. Additionally, the lastPasswordChange characteristic of the user is updated to the current date. The authorization level can only be changed if the user has the top authorization level."
+      operationId: "changeUser"
+      parameters: 
+        - name : accessingUser
+          in: query
+          description: "**Accessing User**. The String (that will be converted to UUID) identification of the user Accessing."
+          schema:
+            type: string
+        - name : userToChange
+          in: query
+          description: "**Changed User**. The String (that will be converted to UUID) identification of the user whose specific quality will be changed."
+          schema:
+            type: string
+        - name : category
+          in: query
+          description: "This could be 'password' or authorization level ('authLevel')."
+          schema:
+            type: string
+            enum: ['password', 'authLevel']
+        - name : newEntity
+          in: query
+          description: "**New Entity**. In order to modify the user, you must know the new value that will be modified for the user."
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful response
+        404:
+          description: not found
+        400:
+          description: bad/malformed request
+  /changeExperiment:
+    put:
+      tags:
+      - Change the Experiment
+      summary: Experiment modification
+      description: "This method modifies a specific experiment (identified by the String-to-UUID expID). Also, the lastEditedBy param is modified to be the userID. If the experiment is not found (or does not exist), the request call will not be performed. Categories may include endDate, bucket selectionRoutine for the experiment, and status modification. This is a generic experiment modification method."
+      operationId: "changeUser"
+      parameters: 
+        - name : accessingUser
+          in: query
+          description: "**Accessing User**. The String (that will be converted to UUID) identification of the user Accessing."
+          schema:
+            type: string
+        - name : expID
+          in: query
+          description: "**Changed Experiment**. The String (that will be converted to UUID) identification of the experiment whose specific quality will be changed."
+          schema:
+            type: string
+        - name : category
+          in: query
+          description: "This could be 'endDate', 'status' or bucket selection routine ('selectionRoutine')."
+          schema:
+            type: string
+            enum: ['endDate', 'selectionRoutine','status']
+        - name : newEntity
+          in: query
+          description: "**New Entity**. In order to modify the user, you must know the new value that will be modified for the user."
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful response
+        404:
+          description: not found
+        400:
+          description: bad/malformed request
+  /changeBucket:
+    put:
+      tags:
+      - Change the Bucket
+      summary: Bucket modification
+      description: "This method modifies a specific experiment (identified by the String-to-UUID expID). Also, the lastEditedBy param is modified to be the userID. If the bucket is not found (or does not exist), the request call will not be performed. Categories may include model/alg, size of data allocation, and status modification. This is a generic bucket modification method."
+      operationId: "changeBucket"
+      parameters: 
+        - name : accessingUser
+          in: query
+          description: "**Accessing User**. The String (that will be converted to UUID) identification of the user Accessing."
+          schema:
+            type: string
+        - name : bucketID
+          in: query
+          description: "**bucketID**. The String (that will be converted to UUID) identification of the bucket whose specific quality will be changed."
+          schema:
+            type: string
+        - name : category
+          in: query
+          description: "This could be 'endDate', 'model' or bucket allocation of cases('allocation') or even 'status'."
+          schema:
+            type: string
+            enum: ['endDate', 'model', 'allocation','status']
+        - name : newEntity
+          in: query
+          description: "**New Entity**. In order to modify the user, you must know the new value that will be modified for the user."
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful response
+        404:
+          description: not found 
+        400:
+          description: bad/malformed request
+  /deleteOne:
+    delete:
+      tags:
+      - Delete One of an Entity
+      summary: Single Entity Deletion
+      description: "This method removes an experiment (identified by ID) and all associated buckets. Also, this method finds a specific user based on their respective id, and then deletes them. This method can also delete a specific bucket. Errors will be thrown if the user who is accessing is not found and/or if the experiment itself cannot be found.. "
+      operationId: "deleteOne"
+      parameters: 
+        - name : accessingUser
+          in: query
+          description: "**Accessing User**. The String (that will be converted to UUID) identification of the user Accessing."
+          schema:
+            type: string
+        - name : category
+          in: query
+          description: "This could be 'Experiments', 'Users' or  'Buckets'"
+          schema:
+            type: string
+            enum: ['Experiments', 'Buckets', 'Users']
+        - name : elementID
+          in: query
+          description: "This is the identity of the specific bucket, user or experiment."
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful response
+        404:
+          description: not found 
+        400:
+          description: bad/malformed request
+  /users/rmOneBucket:
+    delete:
+      tags:
+      - Remove a bucket from a user
+      summary: "New Bucket"
+      description: "This method removes a specific bucket from a user. It will also remove the experiment corresponding to the bucket from the user's experiment repository."
+      operationId: "rmBucketUser"
+      parameters: 
+        - name : userID
+          in: query
+          description: "**User ID**. This String corresponds to the name of the experiment."
+          schema:
+            type: string
+        - name : bucketID
+          in: query
+          description: "**Bucket ID**. This String corresponds to the name of the bucket."
+          schema:
+            type: string
+      responses:
+        201:
+          description: created
+        404:
+          description: not found
+        400:
+          description: bad/malformed request
+  /deleteAll:
+    delete:
+      tags:
+      - Delete all of an Entity
+      summary: Entity Deletion
+      description: "This method is for deleting all the elements of a specific entity. "
+      operationId: "DeleteAll"
+      parameters: 
+        - name : category
+          in: query
+          description: "This could be 'Experiments', 'Users' or  'Buckets'"
+          schema:
+            type: string
+        - name : userID
+          in: query
+          description: This is user validation for this specific action.
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful response
+        404:
+          description: not found 
+        400:
+          description: bad/malformed request
+            

@@ -1,0 +1,11 @@
+CREATE KEYSPACE HILBERT WITH REPLICATION ={'class': 'SimpleStrategy', 'replication_factor': 1}
+   ... ;
+CREATE TABLE HILBERT.UserManagement (session_Token text PRIMARY KEY, experiment_ID text, bucket_ID text);
+CREATE INDEX experimentIDIndexUser on HILBERT.UserManagement (experiment_ID);
+CREATE INDEX bucketIDIndexUser on HILBERT.UserManagement (bucket_ID);
+
+
+CREATE TABLE HILBERT.Analytics (session_Token text PRIMARY KEY, experiment_ID text, bucket_ID text, Clicked int);
+CREATE INDEX experimentIDIndexAnalytics on HILBERT.Analytics (experiment_ID);
+CREATE INDEX bucketIDIndexAnalytics on HILBERT.Analytics (bucket_ID);
+CREATE INDEX ClickedIndex on HILBERT.Analytics (Clicked);

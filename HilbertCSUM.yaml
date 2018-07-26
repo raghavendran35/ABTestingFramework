@@ -1,0 +1,185 @@
+openapi: 3.0.1
+info:
+  title: Hilbert Client-side User Management API
+  description: This is the client-side user management API.
+  version: '1.0'
+  contact:
+    name: Hilbert CSUM
+    email: sachin@hivedata.com
+servers:
+  - url: 'http://localhost:8080/api/v1.0/usersManagement/'
+    description: local host server for Spring App
+paths:
+  /initUser:
+    post:
+      tags:
+        - Initialize a User
+      summary: New user
+      description: >-
+        This method initializes a user and assigns an arbitrary session token to go along with the experiment ID. The bucket is initially assigned as null.
+      operationId: initUser
+      parameters:
+        - name: experimentID
+          in: query
+          description: '**Experiment**. Experiment user is participating in.'
+          schema:
+            type: string
+      responses:
+        '201':
+          description: created
+        '400':
+          description: bad/malformed request
+        '404':
+          description: not found
+  /fullInitUser:
+    post:
+      tags:
+        - Fully Initialize a User
+      summary: New user
+      description: >-
+        This method initializes a user and assigns an arbitrary session token to
+        go along with the experiment ID. The bucket will be assigned based on
+        specific routine requirements.
+      operationId: initUser
+      parameters:
+        - name: experimentID
+          in: query
+          description: '**Experiment**. Experiment user is participating in.'
+          schema:
+            type: string
+      responses:
+        '201':
+          description: created
+        '400':
+          description: bad/malformed request
+        '404':
+          description: not found
+  /returnBucket:
+    get:
+      tags:
+        - Get the bucket of a User
+      summary: Get bucket
+      description: >-
+        This method gets the bucket for a specific user based on their specific sessionID and the experiment that they are in.
+      operationId: returnBucket
+      parameters:
+        - name: sessionToken
+          in: query
+          description: '**Session Token**. Part of user identification.'
+          schema:
+            type: string
+        - name: experimentID
+          in: query
+          description: '**Experiment**. Experiment user is participating in.'
+          schema:
+            type: string
+      responses:
+        '201':
+          description: created
+        '400':
+          description: bad/malformed request
+        '404':
+          description: not found
+  /getUser:
+    get:
+      tags:
+        - Get A User
+      summary: Get User
+      description: >-
+        This method gets a user based on their specific
+        sessionID and the experiment that they are in.
+      operationId: getUser
+      parameters:
+        - name: sessionToken
+          in: query
+          description: '**Session Token**. Part of user identification.'
+          schema:
+            type: string
+        - name: experimentID
+          in: query
+          description: '**Experiment**. Experiment user is participating in.'
+          schema:
+            type: string
+      responses:
+        '201':
+          description: found
+        '400':
+          description: bad/malformed request
+        '404':
+          description: not found
+  /getExpUsers:
+    get:
+      tags:
+        - Get Exp Users
+      summary: Get Exp
+      description: >-
+        This method gets all the Users in an experiment.
+      operationId: getAllUser
+      parameters:
+        - name: experimentID
+          in: query
+          description: '**Experiment**. Experiment user is participating in.'
+          schema:
+            type: string
+      responses:
+        '201':
+          description: found
+        '400':
+          description: bad/malformed request
+        '404':
+          description: not found
+  /assignBucket:
+    put:
+      tags:
+        - Assign bucket for a User
+      summary: Assign bucket
+      description: >-
+        This method assigns the bucket for a specific user based on their specific
+        sessionID and the experiment that they are in.
+      operationId: assignBucket
+      parameters:
+        - name: sessionToken
+          in: query
+          description: '**Session Token**. Part of user identification.'
+          schema:
+            type: string
+        - name: experimentID
+          in: query
+          description: '**Experiment**. Experiment user is participating in.'
+          schema:
+            type: string
+      responses:
+        '201':
+          description: assigned
+        '400':
+          description: bad/malformed request
+        '404':
+          description: not found
+
+  /deleteUser:
+    delete:
+      tags:
+        - Delete A User
+      summary: Delete User
+      description: >-
+        This method deletes a user based on their specific
+        sessionID and the experiment that they are in.
+      operationId: deleteUser
+      parameters:
+        - name: sessionToken
+          in: query
+          description: '**Session Token**. Part of user identification.'
+          schema:
+            type: string
+        - name: experimentID
+          in: query
+          description: '**Experiment**. Experiment user is participating in.'
+          schema:
+            type: string
+      responses:
+        '201':
+          description: found
+        '400':
+          description: bad/malformed request
+        '404':
+          description: not found

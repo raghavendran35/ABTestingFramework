@@ -1,0 +1,9 @@
+com/hivedata/euclid/hilbert/controller/AnalyticsController.class
+com/hivedata/euclid/hilbert/controller/BusinessController.class
+com/hivedata/euclid/hilbert/Application.class
+com/hivedata/euclid/hilbert/repo/AnalyticsRepo.class
+com/hivedata/euclid/hilbert/controller/dates.class
+com/hivedata/euclid/hilbert/entity/Analytics.class
+com/hivedata/euclid/hilbert/entity/UserManagement.class
+com/hivedata/euclid/hilbert/repo/UserManagementRepo.class
+com/hivedata/euclid/hilbert/helper/CorsFilter.class
