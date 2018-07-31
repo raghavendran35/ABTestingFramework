@@ -1,7 +1,4 @@
 package com.hivedata.euclid.hilbert.controller;
-import com.datastax.driver.core.utils.UUIDs;
-import com.hivedata.euclid.hilbert.controller.selectionRoutines;
-import java.util.Date;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hivedata.euclid.hilbert.entity.Analytics;
@@ -14,8 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.UUID;
-import java.util.HashMap;
-import java.util.Arrays;
 
 
 
@@ -62,11 +57,6 @@ public class AnalyticsController {
         analyticsRepo.save(analytics1);
         return convertObject(analytics1);
     }
-
-
-
-
-
 
 
 

@@ -6,12 +6,16 @@ public class selectionRoutines {
 
     //bucket with allocations and stuff
     public static Random rand = new Random();
+    public static String currExperiment1 = "buttonTest";
 
 
 
     public static String doBucketSelection(String method){
         if (method.equals("stochasticRand")){
             return randSelect(BusinessController.buckets);
+        }
+        if (method.equals("ThompsonSampling")){
+            return null;
         }
         return null;
     }
@@ -28,6 +32,12 @@ public class selectionRoutines {
         }
         return bucketNames[bucketNames.length-1];
 
+    }
+
+    //this will essentially function as one iteration and will yield a bucket
+    public static String ThomsponSample(HashMap<String, Double> buckets){
+        ThompsonSampling thompsonSampling = new ThompsonSampling(currExperiment1,buckets.size());
+        return thompsonSampling.BucketToSelect;
     }
 
 
