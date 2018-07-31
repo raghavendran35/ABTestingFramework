@@ -37,8 +37,10 @@ public class BusinessController {
         selectionRoutinesList = new ArrayList<String>();
         selectionRoutinesList.add("ThompsonSampling");
         selectionRoutinesList.add("stochasticRand");
+
+        selectionRoutinesList.add("greedySelection");
         selectionRoutinesList.add("other");
-        currentRoutine = selectionRoutinesList.get(2);
+        currentRoutine = selectionRoutinesList.get(0);
         buckets = new HashMap<String, Double>();
         //if modifying experiment, modify the buckets in the following code
         buckets.put("Button1", 0.5);

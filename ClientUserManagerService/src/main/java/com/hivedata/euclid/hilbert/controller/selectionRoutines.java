@@ -15,8 +15,13 @@ public class selectionRoutines {
             return randSelect(BusinessController.buckets);
         }
         if (method.equals("ThompsonSampling")){
-            return null;
+            return ThomsponSample(BusinessController.buckets);
         }
+
+        if (method.equals("greedySelection")){
+            return greedySelect(BusinessController.buckets);
+        }
+
         return null;
     }
 
@@ -38,6 +43,11 @@ public class selectionRoutines {
     public static String ThomsponSample(HashMap<String, Double> buckets){
         ThompsonSampling thompsonSampling = new ThompsonSampling(currExperiment1,buckets.size());
         return thompsonSampling.BucketToSelect;
+    }
+
+    public static String greedySelect(HashMap<String, Double> buckets){
+        GreedySelection greedySelection = new GreedySelection(currExperiment1, buckets.size());
+        return greedySelection.BucketToSelect;
     }
 
 
